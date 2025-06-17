@@ -1,13 +1,207 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Complete Service Delivery Platform</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXROAD - Complete Service Delivery Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-gray-50">
+    <!-- Auth Page -->
+    <div id="auth-page" class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-purple-50 p-4">
+        <div class="max-w-md w-full space-y-8">
+            <div class="text-center">
+                <div class="mx-auto h-16 w-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl flex items-center justify-center mb-4">
+                    <i data-lucide="fuel" class="h-8 w-8 text-white"></i>
+                </div>
+                <h2 class="text-3xl font-bold text-gray-900 mb-2">NEXROAD</h2>
+                <p class="text-gray-600" id="auth-subtitle">Welcome back!</p>
+            </div>
+
+            <div class="bg-white p-8 rounded-2xl shadow-xl">
+                <form id="auth-form" class="space-y-6">
+                    <!-- Name field (signup only) -->
+                    <div id="name-field" class="hidden">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+                        <input type="text" id="name" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" placeholder="Enter your full name">
+                    </div>
+
+                    <!-- Phone field (signup only) -->
+                    <div id="phone-field" class="hidden">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
+                        <input type="tel" id="phone" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" placeholder="Enter your phone number">
+                    </div>
+
+                    <!-- Account Type -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Account Type</label>
+                        <select id="userType" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                            <option value="user">Regular User</option>
+                            <option value="gas_station">Gas Station</option>
+                            <option value="mechanic">Mechanic Shop</option>
+                        </select>
+                    </div>
+
+                    <!-- Email -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                        <input type="email" id="email" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" placeholder="Enter your email">
+                    </div>
+
+                    <!-- Password -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                        <div class="relative">
+                            <input type="password" id="password" required class="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" placeholder="Enter your password">
+                            <button type="button" id="toggle-password" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700">
+                                <i data-lucide="eye" class="h-5 w-5"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Business fields (signup only for providers) -->
+                    <div id="business-fields" class="hidden space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Business Name</label>
+                            <input type="text" id="businessName" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" placeholder="Enter business name">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Business Address</label>
+                            <input type="text" id="address" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" placeholder="Enter business address">
+                        </div>
+                    </div>
+
+                    <!-- Error message -->
+                    <div id="error-message" class="hidden p-3 bg-red-50 border border-red-200 rounded-lg">
+                        <p class="text-red-700 text-sm"></p>
+                    </div>
+
+                    <!-- Submit button -->
+                    <button type="submit" id="auth-submit" class="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-3 px-4 rounded-lg font-medium hover:from-blue-600 hover:to-purple-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all">
+                        Sign In
+                    </button>
+                </form>
+
+                <div class="mt-6 text-center">
+                    <p class="text-gray-600">
+                        <span id="auth-switch-text">Don't have an account?</span>
+                        <button id="auth-mode-switch" class="ml-2 text-blue-600 hover:text-blue-700 font-medium">Sign up</button>
+                    </p>
+                </div>
+
+                <!-- Demo accounts -->
+                <div id="demo-accounts" class="mt-6 p-4 bg-gray-50 rounded-lg">
+                    <p class="text-sm text-gray-600 mb-3 text-center">Demo Accounts:</p>
+                    <div class="space-y-2">
+                        <button class="demo-btn w-full text-left px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors" data-email="user@demo.com" data-type="user">
+                            <div class="font-medium">Demo User</div>
+                            <div class="text-gray-500">user@demo.com</div>
+                        </button>
+                        <button class="demo-btn w-full text-left px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors" data-email="gas@demo.com" data-type="gas_station">
+                            <div class="font-medium">Demo Gas Station</div>
+                            <div class="text-gray-500">gas@demo.com</div>
+                        </button>
+                        <button class="demo-btn w-full text-left px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors" data-email="mechanic@demo.com" data-type="mechanic">
+                            <div class="font-medium">Demo Mechanic</div>
+                            <div class="text-gray-500">mechanic@demo.com</div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="main-app" class="hidden min-h-screen bg-gray-50">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="fixed left-0 top-0 h-full w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out z-50 -translate-x-full md:translate-x-0">
+            <div class="flex items-center justify-between p-6 border-b border-gray-200">
+                <div class="flex items-center space-x-2">
+                    <div class="h-8 w-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                        <i data-lucide="fuel" class="h-5 w-5 text-white"></i>
+                    </div>
+                    <span class="text-xl font-bold text-gray-900">NEXROAD</span>
+                </div>
+                <button id="close-sidebar" class="md:hidden p-1 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors">
+                    <i data-lucide="x" class="h-5 w-5"></i>
+                </button>
+            </div>
+            
+            <nav class="mt-6 pb-6">
+                <div class="px-4 space-y-2" id="nav-items">
+                    <!-- Navigation items will be populated by JavaScript -->
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Mobile overlay -->
+        <div id="sidebar-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden hidden"></div>
+
+        <!-- Main content -->
+        <div class="md:pl-64">
+            <!-- Header -->
+            <header class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-40">
+                <div class="px-4 sm:px-6 lg:px-8">
+                    <div class="flex justify-between items-center h-16">
+                        <div class="flex items-center">
+                            <button id="menu-toggle" class="md:hidden mr-3 p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors">
+                                <i data-lucide="menu" class="h-5 w-5"></i>
+                            </button>
+                            <h1 id="page-title" class="text-xl font-semibold text-gray-900">Dashboard</h1>
+                        </div>
+                        
+                        <div class="flex items-center space-x-4">
+                            <button class="relative p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-full transition-colors">
+                                <i data-lucide="bell" class="h-5 w-5"></i>
+                                <span class="absolute -top-1 -right-1 h-3 w-3 bg-red-500 rounded-full"></span>
+                            </button>
+                            
+                            <button class="relative p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-full transition-colors">
+                                <i data-lucide="message-circle" class="h-5 w-5"></i>
+                                <span class="absolute -top-1 -right-1 h-3 w-3 bg-blue-500 rounded-full"></span>
+                            </button>
+                            
+                            <div class="flex items-center space-x-2">
+                                <div class="flex items-center space-x-2 px-3 py-2 rounded-lg bg-gray-50">
+                                    <div class="h-8 w-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                                        <i data-lucide="user" class="h-4 w-4 text-white"></i>
+                                    </div>
+                                    <div class="hidden sm:block">
+                                        <p id="user-name" class="text-sm font-medium text-gray-900"></p>
+                                        <p id="user-type" class="text-xs text-gray-500"></p>
+                                    </div>
+                                </div>
+                                
+                                <button id="logout-btn" class="p-2 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-full transition-colors">
+                                    <i data-lucide="log-out" class="h-5 w-5"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Page content -->
+            <main class="p-4 sm:p-6">
+                <div class="max-w-7xl mx-auto">
+                    <div id="page-content">
+                        <!-- Content will be loaded here -->
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/map.js"></script>
+    <script src="js/services.js"></script>
+    <script src="js/messages.js"></script>
+    <script src="js/profile.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/app.js"></script>
+</body>
 </html>
